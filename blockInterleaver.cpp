@@ -7,18 +7,13 @@ std::vector<bool> interleave(std::vector<bool> input, int k) { // numRows = numC
     std::vector<bool> interleaved = {};
 
     // a char is 8 bits
-    std::vector<std::vector<bool>> inputAsMatrix(3*k, std::vector<bool>(3*k));
-
-    // pad with zeroes
-    while (input.size() % (3*k) != 0) {
-        input.push_back(0);
-    }
+    std::vector<std::vector<bool>> inputAsMatrix(3*k, std::vector<bool>(8));
 
 
     // put them in the block_interleaver
     for (int i = 0; i < 3*k; i++) {
-        for (int j = 0; j < 3*k; j++) {
-            inputAsMatrix[i][j] = (input[(i*(3*k)) + j]);
+        for (int j = 0; j < 8; j++) {
+            inputAsMatrix[i][j] = (input[(i*(8)) + j]);
         }
     }
 
@@ -46,11 +41,10 @@ std::vector<bool> deinterleave(std::vector<bool> input, int k) { // numRows = nu
     std::vector<bool> interleaved = {};
 
     // a char is 8 bits
-    std::vector<std::vector<bool>> inputAsMatrix(3*k, std::vector<bool>(3*k));
+    std::vector<std::vector<bool>> inputAsMatrix(8, std::vector<bool>(3*k));
 
 
-    // put them in the block_interleaver
-    for (int i = 0; i < 3*k; i++) {
+    for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 3*k; j++) {
             inputAsMatrix[i][j] = (input[(i*(3*k)) + j]);
         }
@@ -75,3 +69,21 @@ std::vector<bool> deinterleave(std::vector<bool> input, int k) { // numRows = nu
 
     return interleaved;
 }   
+
+
+int main() {
+
+    std::string message = "This is a much longer message";
+    std::vector<bool> messageBinary = stringToVecBool(message);
+    std::cout << "To Interleave: " << vecBoolToStringBinary(messageBinary) << std::endl;
+    
+
+    std::vector<bool> interleaved = interleave(messageBinary, 2);
+    std::cout << "Interleaved: " << vecBoolToStringBinary(interleaved) << std::endl;
+    std::vector<bool> deinterleaved = deinterleave(interleaved, 2);
+    std::cout << "Deinterleaved: " << vecBoolToStringBinary(deinterleaved) << std::endl;
+    std::cout << "Original: " << vecBoolToString(deinterleaved) << std::endl;
+    
+
+    return 0;
+}

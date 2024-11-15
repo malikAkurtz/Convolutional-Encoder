@@ -80,9 +80,9 @@ int main() {
  
             // Encoding, adding noise, and decoding
             std::vector<bool> encoded = encode(code, possible_k, generatorPolynomialsMap[possible_k], timeSteps);
-            std::vector<bool> encoded_interleaved = interleave(encoded, message.length());
+            //std::vector<bool> encoded_interleaved = interleave(encoded, message.length());
             std::vector<bool> noisy_encoded = addNoise(encoded, p);
-            
+
             std::vector<bool> originalCode = viterbiDecode(noisy_encoded, possible_k, possibleStates, generatorPolynomialsMap[possible_k], timeSteps, trellis);
             std::string originalMessage = vecBoolToString(originalCode);
             // string originalMessage = originalCode;
