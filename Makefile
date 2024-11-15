@@ -8,7 +8,7 @@ CXXFLAGS = -std=c++11 -Wall
 TARGET = conv
 
 # Source files
-SOURCES = convViterbi.cpp utility.cpp genPolynomials.cpp blockInterleaver.cpp
+SOURCES = convViterbi.cpp main.cpp utility.cpp genPolynomials.cpp blockInterleaver.cpp
 
 # Object files
 OBJECTS = $(SOURCES:.cpp=.o)

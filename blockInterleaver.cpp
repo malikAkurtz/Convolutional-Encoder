@@ -1,13 +1,19 @@
 #include <vector>
 #include <iostream>
+#include <algorithm>
 #include "utility.h"
 
 
 std::vector<bool> interleave(std::vector<bool> input, int k) { // numRows = numCharacters in input string
     std::vector<bool> interleaved = {};
+    while ((input.size() % 8) != 0) {
+        input.push_back(0);
+    }
 
     // a char is 8 bits
-    std::vector<std::vector<bool>> inputAsMatrix(3*k, std::vector<bool>(8));
+    std::size_t numRows = std::max(static_cast<std::size_t>(3 * k), input.size()/8);
+    std::vector<std::vector<bool>> inputAsMatrix(numRows, std::vector<bool>(8));
+
 
 
     // put them in the block_interleaver
@@ -19,12 +25,12 @@ std::vector<bool> interleave(std::vector<bool> input, int k) { // numRows = numC
 
     // Take the transpose of the input matrix to create the actual block interleaver
 
-    std::cout << "Input Matrix: " << std::endl;
-    printMatrix(inputAsMatrix);
+    // std::cout << "Input Matrix: " << std::endl;
+    // printMatrix(inputAsMatrix);
     
     std::vector<std::vector<bool>> block_interleaver = takeTranspose(inputAsMatrix);
-    std::cout << "Transposed: " << std::endl;
-    printMatrix(block_interleaver);
+    // std::cout << "Transposed: " << std::endl;
+    // printMatrix(block_interleaver);
 
     // read the values back out row by row to get the interleaved output
 
@@ -41,7 +47,8 @@ std::vector<bool> deinterleave(std::vector<bool> input, int k) { // numRows = nu
     std::vector<bool> interleaved = {};
 
     // a char is 8 bits
-    std::vector<std::vector<bool>> inputAsMatrix(8, std::vector<bool>(3*k));
+    std::size_t numCols = std::max(static_cast<std::size_t>(3 * k), input.size()/8);
+    std::vector<std::vector<bool>> inputAsMatrix(8, std::vector<bool>(numCols));
 
 
     for (int i = 0; i < 8; i++) {
@@ -52,12 +59,12 @@ std::vector<bool> deinterleave(std::vector<bool> input, int k) { // numRows = nu
 
     // Take the transpose of the input matrix to create the actual block interleaver
 
-    std::cout << "Input Matrix: " << std::endl;
-    printMatrix(inputAsMatrix);
+    // std::cout << "Input Matrix: " << std::endl;
+    // printMatrix(inputAsMatrix);
     
     std::vector<std::vector<bool>> block_interleaver = takeTranspose(inputAsMatrix);
-    std::cout << "Transposed: " << std::endl;
-    printMatrix(block_interleaver);
+    // std::cout << "Transposed: " << std::endl;
+    // printMatrix(block_interleaver);
 
     // read the values back out row by row to get the interleaved output
 
@@ -71,19 +78,19 @@ std::vector<bool> deinterleave(std::vector<bool> input, int k) { // numRows = nu
 }   
 
 
-int main() {
+// int main() {
 
-    std::string message = "This is a much longer message";
-    std::vector<bool> messageBinary = stringToVecBool(message);
-    std::cout << "To Interleave: " << vecBoolToStringBinary(messageBinary) << std::endl;
+//     std::string message = "This is a much longer message";
+//     std::vector<bool> messageBinary = stringToVecBool(message);
+//     std::cout << "To Interleave: " << vecBoolToStringBinary(messageBinary) << std::endl;
     
 
-    std::vector<bool> interleaved = interleave(messageBinary, 2);
-    std::cout << "Interleaved: " << vecBoolToStringBinary(interleaved) << std::endl;
-    std::vector<bool> deinterleaved = deinterleave(interleaved, 2);
-    std::cout << "Deinterleaved: " << vecBoolToStringBinary(deinterleaved) << std::endl;
-    std::cout << "Original: " << vecBoolToString(deinterleaved) << std::endl;
+//     std::vector<bool> interleaved = interleave(messageBinary, 2);
+//     std::cout << "Interleaved: " << vecBoolToStringBinary(interleaved) << std::endl;
+//     std::vector<bool> deinterleaved = deinterleave(interleaved, 2);
+//     std::cout << "Deinterleaved: " << vecBoolToStringBinary(deinterleaved) << std::endl;
+//     std::cout << "Original: " << vecBoolToString(deinterleaved) << std::endl;
     
 
-    return 0;
-}
+//     return 0;
+// }

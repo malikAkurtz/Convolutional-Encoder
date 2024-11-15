@@ -80,9 +80,10 @@ int main() {
  
             // Encoding, adding noise, and decoding
             std::vector<bool> encoded = encode(code, possible_k, generatorPolynomialsMap[possible_k], timeSteps);
-            //std::vector<bool> encoded_interleaved = interleave(encoded, message.length());
-            std::vector<bool> noisy_encoded = addNoise(encoded, p);
+            std::vector<bool> encoded_interleaved = interleave(encoded, possible_k);
+            std::vector<bool> noisy_encoded_interleaved = addNoise(encoded_interleaved, p);
 
+            std::vector<bool> noisy_encoded = deinterleave(noisy_encoded_interleaved, possible_k);
             std::vector<bool> originalCode = viterbiDecode(noisy_encoded, possible_k, possibleStates, generatorPolynomialsMap[possible_k], timeSteps, trellis);
             std::string originalMessage = vecBoolToString(originalCode);
             // string originalMessage = originalCode;
@@ -97,9 +98,10 @@ int main() {
             std::cout << "Original Message : " << message << std::endl;
             std::cout << "Original Code  : " << vecBoolToStringBinary(code) << std::endl;
             std::cout << "Encoded Code   : " << vecBoolToStringBinary(encoded) << std::endl;
-            std::cout << "Noisy Code     : " << vecBoolToStringBinary(noisy_encoded) << std::endl;
+            std::cout << "Interleaved    : " << vecBoolToStringBinary(encoded_interleaved) << std::endl;
+            std::cout << "Noisy Code     : " << vecBoolToStringBinary(noisy_encoded_interleaved) << std::endl;
             std::cout << "Noise Added?   : " << (noisy_encoded == encoded ? "No" : "Yes") << std::endl;
-            std::cout << "# bits flipped: " << calculateHammingDistance(encoded,noisy_encoded) << std::endl;
+            std::cout << "# bits flipped: " << calculateHammingDistance(encoded_interleaved,noisy_encoded_interleaved) << std::endl;
             ber = ((float) calculateHammingDistance(code, originalCode) / (float) code.size());
             std::cout << "Bit Error Rate : " << ber * 100 << "%" << std::endl;
             average_ber += ber;
